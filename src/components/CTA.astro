@@ -1,0 +1,5 @@
+---
+const {title='Have a hard IRIS problem?', body='Tell us what you are building or what is holding you back. We will help you find a practical way forward.', label='Start a conversation', url='contact/'}=Astro.props;
+const href = `${import.meta.env.BASE_URL}${url.replace(/^\//,'')}`;
+---
+<section class="cta-section"><div class="container"><div class="cta-panel"><div class="cta-glow"></div><div class="cta-content"><p class="eyebrow bright">WORK WITH CARETDEV</p><h2>{title}</h2><p>{body}</p></div><a href={href} class="button button-primary">{label}<span aria-hidden="true">↗</span></a></div></div></section>

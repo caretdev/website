@@ -1,0 +1,50 @@
+---
+import '../styles/global.css';
+const {title='Engineering the next chapter of InterSystems IRIS', description='CaretDev builds modern data integrations, open-source tooling and enterprise engineering solutions for InterSystems IRIS.'} = Astro.props;
+const base = import.meta.env.BASE_URL;
+const href = (path='') => `${base}${path.replace(/^\//,'')}`;
+const current = Astro.url.pathname;
+const nav = [{url:'products/iris-cdc/',name:'IRIS CDC'},{url:'open-source/',name:'Open source'},{url:'services/',name:'Services'},{url:'insights/',name:'Insights'},{url:'about/',name:'About'}];
+---
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#08131b" />
+  <meta name="description" content={description} />
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content={`${title} | CaretDev`} />
+  <meta property="og:description" content={description} />
+  <link rel="icon" href={href('favicon.svg')} type="image/svg+xml" />
+  <title>{title} | CaretDev</title>
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+  <header class="site-header">
+    <div class="container nav-wrap">
+      <a href={href()} class="brand" aria-label="CaretDev home"><img src={href('caretdev-light.svg')} alt="CaretDev" width="1899" height="300" /></a>
+      <nav class="nav" aria-label="Main navigation" id="navigation">
+        {nav.map(item => <a href={href(item.url)} class={current.includes('/'+item.url.split('/')[0]+'/') ? 'nav-active' : ''}>{item.name}</a>)}
+        <a href={href('contact/')} class="button button-small button-outline nav-contact">Let's talk <span aria-hidden="true">↗</span></a>
+      </nav>
+      <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="navigation" aria-label="Toggle navigation"><span></span><span></span><span></span></button>
+    </div>
+  </header>
+  <main id="main"><slot /></main>
+  <footer class="site-footer">
+    <div class="container footer-top">
+      <div><a href={href()} class="brand footer-brand"><img src={href('caretdev-light.svg')} alt="CaretDev" width="1899" height="300" /></a><p>Modern engineering for InterSystems IRIS.<br />Built for teams moving forward.</p></div>
+      <div class="footer-links"><span class="eyebrow">EXPLORE</span><a href={href('products/iris-cdc/')}>IRIS CDC</a><a href={href('open-source/')}>Open source</a><a href={href('services/')}>Engineering services</a></div>
+      <div class="footer-links"><span class="eyebrow">CONNECT</span><a href="https://github.com/caretdev" target="_blank" rel="noopener noreferrer">GitHub ↗</a><a href="mailto:info@caretdev.com">info@caretdev.com</a><a href={href('contact/')}>Contact</a></div>
+    </div>
+    <div class="container footer-bottom"><span>© {new Date().getFullYear()} CaretDev. All rights reserved.</span><span><a href={href('privacy/')}>Privacy</a> <span class="footer-dot">·</span> Independent engineering company. InterSystems IRIS is a trademark of InterSystems Corporation.</span></div>
+  </footer>
+  <script>
+    const toggle = document.querySelector<HTMLButtonElement>('.menu-toggle');
+    const menu = document.querySelector<HTMLElement>('.nav');
+    toggle?.addEventListener('click', () => {const isOpen=toggle.getAttribute('aria-expanded')==='true';toggle.setAttribute('aria-expanded', String(!isOpen)); menu?.classList.toggle('open',!isOpen);});
+    menu?.querySelectorAll('a').forEach(a=>a.addEventListener('click',()=>{menu.classList.remove('open');toggle?.setAttribute('aria-expanded','false')}));
+  </script>
+</body>
+</html>
